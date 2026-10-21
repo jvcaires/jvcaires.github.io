@@ -452,7 +452,7 @@ footer .wrap{display:flex; justify-content:space-between; gap:12px; flex-wrap:wr
     aEls.forEach(function(e){e.setAttribute('aria-label',e.getAttribute(en?'data-en-aria':'data-pt-aria'));});
     iEls.forEach(function(e){e.setAttribute('alt',e.getAttribute(en?'data-en-alt':'data-pt-alt'));});
     root.setAttribute('lang',en?'en':'pt-BR');
-    var ll=document.getElementById('langLabel'); ll.textContent=en?'PT':'EN'; ll.setAttribute('lang',en?'pt-BR':'en');
+    var ll=document.getElementById('langLabel'); ll.textContent=en?'PT-BR':'EN'; ll.setAttribute('lang',en?'pt-BR':'en');
     var lt=en?'Mudar para português':'Switch to English'; langBtn.setAttribute('aria-label',lt); langBtn.setAttribute('title',lt);
     label();
   }
