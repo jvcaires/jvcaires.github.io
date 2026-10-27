@@ -104,31 +104,8 @@ header.top{
 .status i{width:8px; height:8px; border-radius:50%; background:var(--accent); flex:none}
 
 /* Suite panel */
-.suite{background:var(--surface); border:1px solid var(--line); border-radius:10px; overflow:hidden; font-family:var(--mono); font-size:14px}
-.suite-head{display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; padding:14px 18px; border-bottom:1px solid var(--line); color:var(--muted)}
-.suite-head b{color:var(--ink); font-weight:500}
-.suite ol{list-style:none; margin:0; padding:8px 0}
-.suite li{display:grid; grid-template-columns:22px minmax(0,1fr) auto; gap:10px; padding:8px 18px; align-items:baseline}
-.suite li .ok{color:var(--accent)}
-.suite li .ms{color:var(--muted); font-variant-numeric:tabular-nums}
-.suite li.bug{background:var(--defect-soft)}
-.suite li.bug .ok, .suite li.bug .ms{color:var(--defect)}
-.suite li .name{min-width:0}
-.suite li.bug small{display:block; color:var(--defect); font-size:13px; margin-top:2px}
-.suite-foot{display:flex; flex-wrap:wrap; gap:8px 20px; padding:14px 18px; border-top:1px solid var(--line); font-variant-numeric:tabular-nums}
-.suite-foot .pass{color:var(--accent)}
-.suite-foot .warn{color:var(--defect)}
-.bar{height:4px; background:var(--line); display:flex}
-.bar span{display:block; height:100%}
-.bar .p{background:var(--accent); width:97.4%}
-.bar .d{background:var(--defect); width:2.6%}
-@media (prefers-reduced-motion:no-preference){
-  .suite li{animation:row .4s ease-out both}
-  .suite li:nth-child(2){animation-delay:.08s}.suite li:nth-child(3){animation-delay:.16s}
-  .suite li:nth-child(4){animation-delay:.24s}.suite li:nth-child(5){animation-delay:.32s}
-  .suite li:nth-child(6){animation-delay:.4s}
-  @keyframes row{from{opacity:.25; transform:translateX(-4px)}to{opacity:1; transform:none}}
-}
+.suite{margin:0; background:var(--surface); border:1px solid var(--line); border-radius:10px; overflow:hidden}
+.suite video{display:block; width:100%; height:auto; aspect-ratio:4/3; background:var(--surface)}
 
 /* Sections */
 section.block{border-top:1px solid var(--line); padding-block:72px}
@@ -204,8 +181,6 @@ footer .wrap{display:flex; justify-content:space-between; gap:12px; flex-wrap:wr
   .job{grid-template-columns:minmax(0,1fr); gap:6px}
   .stack{grid-template-columns:minmax(0,1fr)}
   .case{padding:22px}
-  .suite{font-size:13px}
-  .suite li{padding:8px 14px}
 }
 </style>
 <style>body{margin:0} img{max-width:100%} [hidden]{display:none!important}</style>
@@ -238,18 +213,11 @@ footer .wrap{display:flex; justify-content:space-between; gap:12px; flex-wrap:wr
       <p class="status" data-en="&lt;i aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;QA Engineer at Marlabs · Araraquara, Brazil"><i aria-hidden="true"></i>QA Engineer na Marlabs · Araraquara, SP</p>
     </div>
 
-    <figure class="suite" aria-label="Exemplo ilustrativo de execução de suíte de regressão" data-en-aria="Illustrative example of a regression suite run">
-      <div class="suite-head"><span><b>regressao.feature</b></span><span data-en="example · CI">exemplo · CI</span></div>
-      <ol>
-        <li><span class="ok">✓</span><span class="name" data-en="2FA login redirects to dashboard">login com 2FA redireciona ao painel</span><span class="ms">184ms</span></li>
-        <li><span class="ok">✓</span><span class="name" data-en="POST /appointments returns 201 with a valid contract">POST /appointments retorna 201 e contrato válido</span><span class="ms">96ms</span></li>
-        <li><span class="ok">✓</span><span class="name" data-en="mobile app syncs after losing connection">app mobile sincroniza após perder conexão</span><span class="ms">1.3s</span></li>
-        <li class="bug"><span class="ok">✕</span><span class="name" data-en="face recognition accepts a photo of a screen&lt;small&gt;BUG filed before deploy&lt;/small&gt;">reconhecimento facial aceita foto de tela<small>BUG aberto antes do deploy</small></span><span class="ms">412ms</span></li>
-        <li><span class="ok">✓</span><span class="name" data-en="SOAP billing service responds within SLA">serviço SOAP de faturamento responde no SLA</span><span class="ms">640ms</span></li>
-        <li><span class="ok">✓</span><span class="name" data-en="form is keyboard navigable">formulário navegável por teclado</span><span class="ms">220ms</span></li>
-      </ol>
-      <div class="bar" aria-hidden="true"><span class="p"></span><span class="d"></span></div>
-      <div class="suite-foot"><span class="pass" data-en="37 passed">37 passaram</span><span class="warn" data-en="1 defect caught">1 defeito barrado</span><span data-en="38 scenarios · 1m 42s">38 cenários · 1m 42s</span></div>
+    <figure class="suite">
+      <video id="suiteVideo" muted loop playsinline autoplay preload="auto" width="1280" height="960"
+        poster="assets/video/suite-pt-br-light.webp" src="assets/video/suite-pt-br-light.mp4"
+        aria-label="Animação: suíte de regressão executando, 37 cenários passam e 1 defeito é barrado antes do deploy"
+        data-en-aria="Animation: a regression suite runs, 37 scenarios pass and 1 defect is caught before deploy"></video>
     </figure>
   </div>
 
@@ -441,7 +409,20 @@ footer .wrap{display:flex; justify-content:space-between; gap:12px; flex-wrap:wr
   var lang='pt';
   var SUN='<svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4L6 18M18 6l1.4-1.4"/></svg>';
   var MOON='<svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>';
-  function label(){var en=lang==='en', d=isDark(); var t=d?(en?'Switch to light theme':'Mudar para tema claro'):(en?'Switch to dark theme':'Mudar para tema escuro'); btn.innerHTML=d?SUN:MOON; btn.setAttribute('aria-label',t); btn.setAttribute('title',t);}
+  var vid=document.getElementById('suiteVideo');
+  var still=matchMedia('(prefers-reduced-motion: reduce)');
+  function syncVideo(){
+    if(!vid) return;
+    var key=(lang==='en'?'en':'pt-br')+'-'+(isDark()?'dark':'light');
+    var ext=vid.canPlayType('video/mp4; codecs="avc1.640028"')?'mp4':'webm';
+    var src='assets/video/suite-'+key+'.'+ext, poster='assets/video/suite-'+key+'.webp';
+    vid.setAttribute('poster',poster);
+    if(still.matches){ vid.removeAttribute('autoplay'); if(vid.getAttribute('src')){ vid.pause(); vid.removeAttribute('src'); vid.load(); } return; }
+    if(vid.getAttribute('src')===src) return;
+    var t=vid.currentTime||0; vid.setAttribute('src',src);
+    vid.addEventListener('loadedmetadata',function once(){ vid.removeEventListener('loadedmetadata',once); try{vid.currentTime=t;}catch(e){} var p=vid.play(); if(p&&p.catch)p.catch(function(){}); });
+  }
+  function label(){syncVideo(); var en=lang==='en', d=isDark(); var t=d?(en?'Switch to light theme':'Mudar para tema claro'):(en?'Switch to dark theme':'Mudar para tema escuro'); btn.innerHTML=d?SUN:MOON; btn.setAttribute('aria-label',t); btn.setAttribute('title',t);}
   var tEls=document.querySelectorAll('[data-en]'); tEls.forEach(function(e){e.setAttribute('data-pt',e.innerHTML);});
   var aEls=document.querySelectorAll('[data-en-aria]'); aEls.forEach(function(e){e.setAttribute('data-pt-aria',e.getAttribute('aria-label'));});
   var iEls=document.querySelectorAll('[data-en-alt]'); iEls.forEach(function(e){e.setAttribute('data-pt-alt',e.getAttribute('alt'));});
@@ -461,6 +442,7 @@ footer .wrap{display:flex; justify-content:space-between; gap:12px; flex-wrap:wr
   setLang(initial);
   langBtn.addEventListener('click',function(){var n=lang==='en'?'pt':'en'; setLang(n); try{localStorage.setItem('lang',n);}catch(e){}});
   label();
+  try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',label); still.addEventListener('change',label);}catch(e){}
   btn.addEventListener('click',function(){
     var next=isDark()?'light':'dark'; root.setAttribute('data-theme',next);
     try{localStorage.setItem('theme',next);}catch(e){} label();

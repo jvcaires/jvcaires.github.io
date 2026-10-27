@@ -1,0 +1,206 @@
+<!doctype html>
+<html
+  lang="pt-BR"
+  data-composition-variables='[
+    {"id":"lang","type":"enum","label":"Idioma","default":"pt","options":[{"value":"pt","label":"Português (PT-BR)"},{"value":"en","label":"English"}]},
+    {"id":"theme","type":"enum","label":"Tema","default":"light","options":[{"value":"light","label":"Claro"},{"value":"dark","label":"Escuro"}]}
+  ]'
+>
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/IBMPlexMono-Regular.ttf"); font-weight: 400; }
+  @font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/IBMPlexMono-Bold.ttf"); font-weight: 700; }
+
+  /* Tokens copiados do portfólio (jvcaires.github.io) */
+  #main {
+    --surface: #FFFFFF; --ink: #111723; --muted: #525D6E; --line: #DAE0E9;
+    --accent: #1D4FB0; --defect: #A25A00; --defect-soft: #FBEEDB; --track: #EEF1F6;
+  }
+  #main[data-theme="dark"] {
+    --surface: #151B25; --ink: #E6EBF3; --muted: #9AA5B6; --line: #252E3B;
+    --accent: #7FA9F4; --defect: #E8A54B; --defect-soft: #33260F; --track: #1E2531;
+  }
+
+  html, body { margin: 0; background: #000; }
+  #main {
+    position: relative; width: 1280px; height: 960px; overflow: hidden;
+    background: var(--surface); color: var(--ink);
+    font-family: "IBM Plex Mono", monospace; font-size: 32px; line-height: 1.3;
+    font-variant-numeric: tabular-nums;
+    display: flex; flex-direction: column;
+  }
+
+  .head { display: flex; justify-content: space-between; align-items: center; gap: 24px; height: 124px; padding: 0 52px; border-bottom: 2px solid var(--line); flex: none; }
+  .file { font-weight: 700; }
+  .state { position: relative; color: var(--muted); height: 42px; min-width: 300px; text-align: right; }
+  .state span { position: absolute; right: 0; top: 0; white-space: nowrap; }
+
+  ol { list-style: none; margin: 0; padding: 22px 0; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+  li { position: relative; display: grid; grid-template-columns: 52px minmax(0,1fr) auto; gap: 24px; align-items: start; padding: 18px 52px; }
+  .flood { position: absolute; inset: 0; background: var(--defect-soft); transform-origin: left center; }
+  .icon { position: relative; width: 40px; height: 40px; margin-top: 2px; }
+  .icon > * { position: absolute; inset: 0; }
+  .q { border: 3px solid var(--line); border-radius: 50%; inset: 7px; }
+  .spin { border: 4px solid var(--line); border-top-color: var(--accent); border-radius: 50%; inset: 2px; }
+  .ok, .ko { display: grid; place-items: center; }
+  .ok svg, .ko svg { display: block; }
+  .ok { color: var(--accent); }
+  .ko { color: var(--defect); }
+  .name { position: relative; }
+  .name small { display: block; font-size: 26px; color: var(--defect); margin-top: 6px; }
+  .ms { color: var(--muted); }
+  li.bug .ms { color: var(--defect); }
+
+  .bar { height: 10px; background: var(--track); position: relative; flex: none; }
+  .bar i { position: absolute; top: 0; bottom: 0; display: block; transform-origin: left center; }
+  .bar .p { left: 0; width: 97.4%; background: var(--accent); }
+  .bar .d { left: 97.4%; width: 2.6%; background: var(--defect); }
+
+  .foot { display: flex; gap: 48px; align-items: center; height: 120px; padding: 0 52px; border-top: 2px solid var(--line); flex: none; }
+  .pass { color: var(--accent); }
+  .warn { color: var(--defect); }
+</style>
+</head>
+<body>
+<div id="main" data-composition-id="main" data-start="0" data-duration="10" data-width="1280" data-height="960">
+
+  <div class="head">
+    <span class="file" id="t-file">regressao.feature</span>
+    <span class="state"><span id="s-run">executando…</span><span id="s-done">concluído · CI</span></span>
+  </div>
+
+  <ol id="rows">
+    <li id="r0"><span class="icon"><i class="q"></i><i class="spin"></i><b class="ok"><svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></b></span><span class="name" id="n0">login com 2FA redireciona ao painel</span><span class="ms" id="m0">184ms</span></li>
+    <li id="r1"><span class="icon"><i class="q"></i><i class="spin"></i><b class="ok"><svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></b></span><span class="name" id="n1">POST /appointments retorna 201</span><span class="ms" id="m1">96ms</span></li>
+    <li id="r2"><span class="icon"><i class="q"></i><i class="spin"></i><b class="ok"><svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></b></span><span class="name" id="n2">app sincroniza após perder conexão</span><span class="ms" id="m2">1.3s</span></li>
+    <li id="r3" class="bug"><i class="flood" id="flood"></i><span class="icon"><i class="q"></i><i class="spin"></i><b class="ko"><svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M7 7l10 10M17 7L7 17"/></svg></b></span><span class="name"><span id="n3">reconhecimento facial aceita foto de tela</span><small id="bugnote">BUG aberto antes do deploy</small></span><span class="ms" id="m3">412ms</span></li>
+    <li id="r4"><span class="icon"><i class="q"></i><i class="spin"></i><b class="ok"><svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></b></span><span class="name" id="n4">serviço SOAP responde no SLA</span><span class="ms" id="m4">640ms</span></li>
+    <li id="r5"><span class="icon"><i class="q"></i><i class="spin"></i><b class="ok"><svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></b></span><span class="name" id="n5">formulário navegável por teclado</span><span class="ms" id="m5">220ms</span></li>
+  </ol>
+
+  <div class="bar"><i class="p" id="bar-p"></i><i class="d" id="bar-d"></i></div>
+
+  <div class="foot">
+    <span class="pass" id="f-pass">0 passaram</span>
+    <span class="warn" id="f-warn">1 defeito barrado</span>
+    <span id="f-total">38 cenários · 0m 00s</span>
+  </div>
+</div>
+
+<script src="assets/gsap-3.14.2.min.js"></script>
+<script>
+(function () {
+  var vars = (window.__hyperframes && window.__hyperframes.getVariables && window.__hyperframes.getVariables()) || {};
+  var lang = vars.lang === "en" ? "en" : "pt";
+  var root = document.getElementById("main");
+  root.setAttribute("data-theme", vars.theme === "dark" ? "dark" : "light");
+  document.documentElement.lang = lang === "en" ? "en" : "pt-BR";
+
+  var COPY = {
+    pt: {
+      file: "regressao.feature", run: "executando…", done: "concluído · CI",
+      names: ["login com 2FA redireciona ao painel", "POST /appointments retorna 201", "app sincroniza após perder conexão",
+              "reconhecimento facial aceita foto de tela", "serviço SOAP responde no SLA", "formulário navegável por teclado"],
+      bug: "BUG aberto antes do deploy",
+      pass: function (n) { return n + " passaram"; }, warn: "1 defeito barrado",
+      total: function (m, s) { return "38 cenários · " + m + "m " + s + "s"; }
+    },
+    en: {
+      file: "regression.feature", run: "running…", done: "done · CI",
+      names: ["2FA login redirects to dashboard", "POST /appointments returns 201", "app syncs after losing connection",
+              "face recognition accepts a screen photo", "SOAP service responds within SLA", "form is keyboard navigable"],
+      bug: "BUG filed before deploy",
+      pass: function (n) { return n + " passed"; }, warn: "1 defect caught",
+      total: function (m, s) { return "38 scenarios · " + m + "m " + s + "s"; }
+    }
+  }[lang];
+
+  document.getElementById("t-file").textContent = COPY.file;
+  document.getElementById("s-run").textContent = COPY.run;
+  document.getElementById("s-done").textContent = COPY.done;
+  COPY.names.forEach(function (t, i) { document.getElementById("n" + i).textContent = t; });
+  document.getElementById("bugnote").textContent = COPY.bug;
+  document.getElementById("f-warn").textContent = COPY.warn;
+
+  var css = getComputedStyle(root);
+  var INK = css.getPropertyValue("--ink").trim(), MUTED = css.getPropertyValue("--muted").trim();
+
+  var tl = gsap.timeline({ paused: true });
+  var rows = [0, 1, 2, 3, 4, 5];
+  var q = function (i, sel) { return "#r" + i + " " + sel; };
+
+  // Estado inicial (igual ao último quadro, para o loop não ter corte).
+  // gsap.set fora da timeline: um set na posição 0 não é aplicado num seek(0) a partir de 0.
+  gsap.set(rows.map(function (i) { return q(i, ".spin"); }).join(","), { opacity: 0, rotation: 0 });
+  gsap.set(rows.map(function (i) { return q(i, ".ok, ") + q(i, ".ko"); }).join(","), { opacity: 0, scale: 0.6 });
+  gsap.set(rows.map(function (i) { return "#m" + i; }).join(","), { opacity: 0, x: -12 });
+  gsap.set(rows.map(function (i) { return "#n" + i; }).join(","), { color: MUTED });
+  gsap.set("#flood", { scaleX: 0 });
+  gsap.set("#bugnote", { opacity: 0, filter: "blur(6px)" });
+  gsap.set("#bar-p", { scaleX: 0 });
+  gsap.set("#bar-d", { opacity: 0 });
+  gsap.set("#f-warn", { opacity: 0 });
+  gsap.set("#s-done", { opacity: 0 });
+  gsap.set("#s-run", { opacity: 1 });
+
+  // Execução: cada cenário gira, depois resolve
+  var t = 0.35, STEP = 0.92, SPIN = 0.55, END = 0;
+  rows.forEach(function (i) {
+    var isBug = i === 3, spin = isBug ? 0.85 : SPIN, done = t + spin;
+    tl.to(q(i, ".q"), { opacity: 0, duration: 0.12, ease: "power2.out" }, t);
+    tl.to(q(i, ".spin"), { opacity: 1, duration: 0.12, ease: "power2.out" }, t);
+    tl.to(q(i, ".spin"), { rotation: 360 * spin * 1.6, duration: spin, ease: "none" }, t);
+    tl.to("#n" + i, { color: INK, duration: 0.25, ease: "power2.out" }, t);
+    tl.to(q(i, ".spin"), { opacity: 0, duration: 0.1, ease: "power2.in" }, done - 0.05);
+    tl.to(q(i, isBug ? ".ko" : ".ok"), { opacity: 1, scale: 1, duration: 0.35, ease: "expo.out" }, done);
+    tl.to("#m" + i, { opacity: 1, x: 0, duration: 0.4, ease: "expo.out" }, done + 0.05);
+    if (isBug) {
+      tl.to("#flood", { scaleX: 1, duration: 0.45, ease: "power2.inOut" }, done);
+      tl.to("#bugnote", { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, done + 0.25);
+      tl.to("#bar-d", { opacity: 1, duration: 0.2, ease: "power2.out" }, done);
+      tl.to("#f-warn", { opacity: 1, duration: 0.2, ease: "power2.out" }, done + 0.15);
+    }
+    END = done + 0.4;
+    t += isBug ? STEP + 0.3 : STEP;
+  });
+
+  // Barra e contadores avançam durante toda a execução
+  var RUN_START = 0.35, RUN_END = END - 0.3;
+  tl.to("#bar-p", { scaleX: 1, duration: RUN_END - RUN_START, ease: "power1.inOut" }, RUN_START);
+  var counter = { v: 0 };
+  var passEl = document.getElementById("f-pass"), totalEl = document.getElementById("f-total");
+  function paint() {
+    var p = Math.round(counter.v * 37), secs = Math.round(counter.v * 102);
+    passEl.textContent = COPY.pass(p);
+    totalEl.textContent = COPY.total(Math.floor(secs / 60), String(secs % 60).padStart(2, "0"));
+  }
+  paint();
+  tl.to(counter, { v: 1, duration: RUN_END - RUN_START, ease: "power1.inOut", onUpdate: paint }, RUN_START);
+
+  // Fim da execução
+  tl.to("#s-run", { opacity: 0, filter: "blur(6px)", duration: 0.15, ease: "power2.in" }, END);
+  tl.fromTo("#s-done", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, END + 0.1);
+
+  // Reset suave para o início do loop (9.45s → 9.9s)
+  var R = 9.45, RD = 0.4;
+  tl.to(rows.map(function (i) { return q(i, ".ok, ") + q(i, ".ko"); }).join(","), { opacity: 0, scale: 0.6, duration: RD * 0.6, ease: "power3.in" }, R);
+  tl.to(rows.map(function (i) { return q(i, ".q"); }).join(","), { opacity: 1, duration: RD, ease: "power2.inOut" }, R + 0.1);
+  tl.to(rows.map(function (i) { return "#m" + i; }).join(","), { opacity: 0, x: -12, duration: RD * 0.6, ease: "power3.in" }, R);
+  tl.to(rows.map(function (i) { return "#n" + i; }).join(","), { color: MUTED, duration: RD, ease: "power2.inOut" }, R);
+  tl.to("#flood", { opacity: 0, duration: RD * 0.6, ease: "power2.in" }, R);
+  tl.to("#bugnote", { opacity: 0, filter: "blur(6px)", duration: RD * 0.5, ease: "power3.in" }, R);
+  tl.to("#bar-p", { opacity: 0, duration: RD * 0.6, ease: "power2.in" }, R);
+  tl.to("#bar-d, #f-warn", { opacity: 0, duration: RD * 0.5, ease: "power3.in" }, R);
+  tl.to(counter, { v: 0, duration: RD, ease: "power2.inOut", onUpdate: paint }, R);
+  tl.to("#s-done", { opacity: 0, filter: "blur(6px)", duration: 0.15, ease: "power2.in" }, R);
+  tl.to("#s-run", { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, R + 0.15);
+  tl.set("#flood, #bar-p", { scaleX: 0 }, R + RD * 0.6 + 0.01);
+  tl.set("#flood, #bar-p", { opacity: 1 }, R + RD * 0.6 + 0.02);
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines["main"] = tl;
+})();
+</script>
+</body>
+</html>
