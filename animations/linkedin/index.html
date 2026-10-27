@@ -1,0 +1,245 @@
+<!doctype html>
+<html
+  lang="pt-BR"
+  data-composition-variables='[
+    {"id":"lang","type":"enum","label":"Idioma","default":"pt","options":[{"value":"pt","label":"Português (PT-BR)"},{"value":"en","label":"English"}]},
+    {"id":"theme","type":"enum","label":"Tema","default":"dark","options":[{"value":"dark","label":"Escuro"},{"value":"light","label":"Claro"}]}
+  ]'
+>
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face { font-family: "Bricolage Grotesque"; src: url("assets/fonts/BricolageGrotesque-Bold.ttf"); font-weight: 700; }
+  @font-face { font-family: "Instrument Sans"; src: url("assets/fonts/InstrumentSans-Regular.ttf"); font-weight: 400; }
+  @font-face { font-family: "Instrument Sans"; src: url("assets/fonts/InstrumentSans-Bold.ttf"); font-weight: 700; }
+  @font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/IBMPlexMono-Regular.ttf"); font-weight: 400; }
+  @font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/IBMPlexMono-Bold.ttf"); font-weight: 700; }
+
+  /* Tokens do portfólio jvcaires.github.io */
+  #main {
+    --bg: #0D1118; --surface: #151B25; --ink: #E6EBF3; --muted: #9AA5B6; --line: #252E3B;
+    --accent: #7FA9F4; --on-accent: #0D1118; --track: #1E2531;
+    --display: "Bricolage Grotesque", sans-serif; --body: "Instrument Sans", sans-serif; --mono: "IBM Plex Mono", monospace;
+  }
+  #main[data-theme="light"] {
+    --bg: #F3F5F9; --surface: #FFFFFF; --ink: #111723; --muted: #525D6E; --line: #DAE0E9;
+    --accent: #1D4FB0; --on-accent: #FFFFFF; --track: #EEF1F6;
+  }
+
+  html, body { margin: 0; background: #000; }
+  #main { position: relative; width: 1080px; height: 1350px; overflow: hidden; background: var(--bg); color: var(--ink); font-family: var(--body); }
+  #main * { box-sizing: border-box; }
+
+  /* Cena 1: a suíte */
+  .top { position: absolute; top: 84px; left: 84px; right: 84px; display: flex; justify-content: space-between; font-family: var(--mono); font-size: 28px; color: var(--muted); }
+  .top b { color: var(--ink); font-weight: 700; }
+  .state { position: relative; min-width: 260px; height: 38px; text-align: right; }
+  .state span { position: absolute; right: 0; top: 0; white-space: nowrap; }
+  #title { position: absolute; bottom: calc(1350px - 470px + 48px); left: 84px; width: 912px; margin: 0; font-family: var(--display); font-weight: 700; font-size: 80px; line-height: 1.02; letter-spacing: -0.02em; text-wrap: balance; }
+
+  #panel { position: absolute; top: 470px; left: 84px; width: 912px; height: 740px; background: var(--surface); border: 2px solid var(--line); border-radius: 22px; overflow: hidden; display: flex; flex-direction: column; }
+  ol { list-style: none; margin: 0; padding: 26px 0; flex: 1; display: flex; flex-direction: column; justify-content: space-around; }
+  li { display: grid; grid-template-columns: 48px 112px minmax(0,1fr); gap: 22px; align-items: center; padding: 0 40px; }
+  .icon { position: relative; width: 48px; height: 48px; }
+  .icon > * { position: absolute; inset: 0; }
+  .q { border: 4px solid var(--line); border-radius: 50%; inset: 10px; }
+  .spin { border: 5px solid var(--line); border-top-color: var(--accent); border-radius: 50%; inset: 3px; }
+  .ok { display: grid; place-items: center; color: var(--accent); }
+  .ok svg { display: block; }
+  .yr { font-family: var(--mono); font-weight: 700; font-size: 32px; font-variant-numeric: tabular-nums; }
+  .tx { font-size: 36px; line-height: 1.2; }
+  #bar { height: 12px; background: var(--track); position: relative; flex: none; }
+  #bar-fill { position: absolute; inset: 0; background: var(--accent); transform-origin: left center; }
+  .foot { height: 104px; flex: none; display: flex; justify-content: space-between; align-items: center; padding: 0 40px; border-top: 2px solid var(--line); font-family: var(--mono); font-size: 32px; font-variant-numeric: tabular-nums; }
+  #f-pass { color: var(--accent); }
+  #f-year { color: var(--muted); }
+  #url1 { position: absolute; left: 84px; top: 1240px; font-family: var(--mono); font-size: 28px; color: var(--muted); }
+
+  /* Cena 2: build aprovado (a barra de progresso vira o card) */
+  #flood { position: absolute; inset: 0; background: var(--accent); }
+  #approved { position: absolute; top: 470px; left: 84px; width: 912px; height: 740px; padding: 0 72px; display: flex; flex-direction: column; justify-content: center; gap: 28px; color: var(--on-accent); }
+  #approved .mark { width: 120px; height: 120px; }
+  #ap-title { margin: 0; font-family: var(--display); font-size: 120px; line-height: 0.98; letter-spacing: -0.025em; }
+  #ap-sub { font-family: var(--mono); font-size: 36px; }
+
+  /* Cena 3: cartão final */
+  #end { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0 84px; gap: 0; }
+  #avatar { width: 340px; height: 340px; border-radius: 50%; overflow: hidden; margin-bottom: 56px; }
+  #avatar img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  #name { margin: 0; font-family: var(--display); font-size: 96px; line-height: 1; letter-spacing: -0.02em; text-wrap: balance; }
+  #name span { display: inline-block; }
+  #role { margin-top: 26px; font-size: 44px; color: var(--muted); }
+  #chips { margin-top: 40px; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  #chips span { font-family: var(--mono); font-size: 28px; padding: 10px 18px; border: 2px solid var(--line); border-radius: 10px; color: var(--ink); }
+  #url2 { margin-top: 56px; font-family: var(--mono); font-size: 40px; font-weight: 700; color: var(--accent); }
+</style>
+</head>
+<body>
+<div id="main" data-composition-id="main" data-start="0" data-duration="21" data-width="1080" data-height="1350">
+
+  <div class="top" id="top"><b id="file">joao-vitor-de-caires.feature</b><span class="state"><span id="s-run">executando…</span><span id="s-done">concluído</span></span></div>
+  <h1 id="title">Minha carreira, executada como uma suíte de testes.</h1>
+
+  <div id="panel">
+    <ol>
+      <li><span class="icon"><i class="q"></i><i class="spin"></i><b class="ok"><svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></b></span><span class="yr" id="y0">2018</span><span class="tx" id="x0"></span></li>
+      <li><span class="icon"><i class="q"></i><i class="spin"></i><b class="ok"><svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></b></span><span class="yr" id="y1">2019</span><span class="tx" id="x1"></span></li>
+      <li><span class="icon"><i class="q"></i><i class="spin"></i><b class="ok"><svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></b></span><span class="yr" id="y2">2021</span><span class="tx" id="x2"></span></li>
+      <li><span class="icon"><i class="q"></i><i class="spin"></i><b class="ok"><svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></b></span><span class="yr" id="y3">2022</span><span class="tx" id="x3"></span></li>
+      <li><span class="icon"><i class="q"></i><i class="spin"></i><b class="ok"><svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></b></span><span class="yr" id="y4">ISTQB</span><span class="tx" id="x4"></span></li>
+      <li><span class="icon"><i class="q"></i><i class="spin"></i><b class="ok"><svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></b></span><span class="yr" id="y5">hoje</span><span class="tx" id="x5"></span></li>
+    </ol>
+    <div id="bar"><i id="bar-fill"></i></div>
+    <div class="foot"><span id="f-pass">0 de 6 passaram</span><span id="f-year">2018</span></div>
+  </div>
+  <div id="url1">jvcaires.github.io</div>
+
+  <div id="flood"></div>
+  <div id="approved">
+    <svg class="mark" id="ap-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+    <h2 id="ap-title">Build aprovado</h2>
+    <div id="ap-sub">6 de 6 cenários · 8 anos de QA</div>
+  </div>
+
+  <div id="end">
+    <div id="avatar"><img id="photo" src="assets/foto.jpg" alt="João Vitor de Caires"></div>
+    <h2 id="name"><span>João</span> <span>Vitor</span> <span>de</span> <span>Caires</span></h2>
+    <div id="role">QA Engineer · Marlabs</div>
+    <div id="chips"><span>ISTQB CTFL 4.0</span><span>Selenium</span><span>Appium</span><span>Playwright</span></div>
+    <div id="url2">jvcaires.github.io</div>
+  </div>
+</div>
+
+<script src="assets/gsap-3.14.2.min.js"></script>
+<script>
+(function () {
+  var vars = (window.__hyperframes && window.__hyperframes.getVariables && window.__hyperframes.getVariables()) || {};
+  var lang = vars.lang === "en" ? "en" : "pt";
+  var root = document.getElementById("main");
+  root.setAttribute("data-theme", vars.theme === "light" ? "light" : "dark");
+  document.documentElement.lang = lang === "en" ? "en" : "pt-BR";
+
+  var COPY = {
+    pt: {
+      title: "Minha carreira, executada como uma suíte de testes.",
+      run: "executando…", done: "concluído",
+      years: ["2018", "2019", "2021", "2022", "ISTQB", "hoje"],
+      rows: ["Estágio em testes · DXC Technology", "UAT e regressão · Telefônica/VIVO", "BDD e projetos globais · Marlabs",
+             "QA Engineer · Marlabs", "Certificação CTFL 4.0", "Automação com IA · Playwright MCP"],
+      pass: function (n) { return n + " de 6 " + (n === 1 ? "passou" : "passaram"); },
+      apTitle: "Build aprovado", apSub: "6 de 6 cenários · 8 anos de QA"
+    },
+    en: {
+      title: "My career, run as a test suite.",
+      run: "running…", done: "done",
+      years: ["2018", "2019", "2021", "2022", "ISTQB", "now"],
+      rows: ["Testing internship · DXC Technology", "UAT and regression · Telefônica/VIVO", "BDD and global projects · Marlabs",
+             "QA Engineer · Marlabs", "CTFL 4.0 certified", "AI automation · Playwright MCP"],
+      pass: function (n) { return n + " of 6 passed"; },
+      apTitle: "Build approved", apSub: "6 of 6 scenarios · 8 years in QA"
+    }
+  }[lang];
+
+  document.getElementById("title").textContent = COPY.title;
+  document.getElementById("s-run").textContent = COPY.run;
+  document.getElementById("s-done").textContent = COPY.done;
+  COPY.rows.forEach(function (t, i) { document.getElementById("x" + i).textContent = t; document.getElementById("y" + i).textContent = COPY.years[i]; });
+  document.getElementById("ap-title").textContent = COPY.apTitle;
+  document.getElementById("ap-sub").textContent = COPY.apSub;
+
+  var css = getComputedStyle(root);
+  var INK = css.getPropertyValue("--ink").trim(), MUTED = css.getPropertyValue("--muted").trim(), ACCENT = css.getPropertyValue("--accent").trim();
+  var W = 1080, H = 1350;
+
+  // Geometria em pixels de layout (offset*, não afetado por escala do preview)
+  var panel = document.getElementById("panel"), bar = document.getElementById("bar"), avatar = document.getElementById("avatar");
+  function inset(x, y, w, h, r) { return "inset(" + y + "px " + (W - x - w) + "px " + (H - y - h) + "px " + x + "px round " + r + "px)"; }
+  var PX = panel.offsetLeft, PY = panel.offsetTop, PW = panel.offsetWidth, PH = panel.offsetHeight;
+  var BAR = inset(PX + 2, PY + bar.offsetTop + 2, PW - 4, bar.offsetHeight, 0);
+  var CARD = inset(PX, PY, PW, PH, 22);
+  var AX = avatar.offsetLeft, AY = avatar.offsetTop, AS = avatar.offsetWidth;
+  var CIRCLE = inset(AX, AY, AS, AS, AS / 2);
+
+  var rows = [0, 1, 2, 3, 4, 5];
+  var q = function (i, sel) { return "#panel li:nth-child(" + (i + 1) + ") " + sel; };
+  var all = function (sel) { return rows.map(function (i) { return q(i, sel); }).join(","); };
+
+  // Estado inicial (quadro 0 = miniatura: título e suíte já na tela)
+  gsap.set(all(".spin"), { opacity: 0, rotation: 0 });
+  gsap.set(all(".ok"), { opacity: 0, scale: 0.6 });
+  gsap.set(rows.map(function (i) { return "#x" + i; }).join(","), { color: MUTED });
+  gsap.set(rows.map(function (i) { return "#y" + i; }).join(","), { color: MUTED });
+  gsap.set("#bar-fill", { scaleX: 0 });
+  gsap.set("#s-done", { opacity: 0 });
+  gsap.set("#flood", { clipPath: BAR, opacity: 0 });
+  gsap.set("#approved", { opacity: 0 });
+  gsap.set("#ap-mark, #ap-title, #ap-sub", { opacity: 0, filter: "blur(10px)" });
+  gsap.set("#end", { opacity: 1 });
+  gsap.set("#photo", { opacity: 0, scale: 1.08 });
+  gsap.set("#name span, #role, #chips span, #url2", { opacity: 0, filter: "blur(8px)" });
+
+  var tl = gsap.timeline({ paused: true });
+
+  // Cena 1: cada marco da carreira roda como um cenário (0.8s → ~11.3s)
+  var T0 = 0.8, STEP = 1.95, SPIN = 0.7;
+  rows.forEach(function (i) {
+    var t = T0 + i * STEP, done = t + SPIN;
+    tl.to(q(i, ".q"), { opacity: 0, duration: 0.12, ease: "power2.out" }, t);
+    tl.to(q(i, ".spin"), { opacity: 1, duration: 0.12, ease: "power2.out" }, t);
+    tl.to(q(i, ".spin"), { rotation: 400, duration: SPIN, ease: "none" }, t);
+    tl.to("#x" + i, { color: INK, duration: 0.3, ease: "power2.out" }, t);
+    tl.to(q(i, ".spin"), { opacity: 0, duration: 0.1, ease: "power2.in" }, done - 0.05);
+    tl.to(q(i, ".ok"), { opacity: 1, scale: 1, duration: 0.4, ease: "expo.out" }, done);
+    tl.to("#y" + i, { color: ACCENT, duration: 0.3, ease: "power2.out" }, done);
+  });
+  var RUN_END = T0 + 5 * STEP + SPIN;
+
+  // Barra, contador de cenários e o ano avançando de 2018 até hoje
+  var passEl = document.getElementById("f-pass"), yearEl = document.getElementById("f-year");
+  var c = { p: 0, y: 0 };
+  function paint() {
+    passEl.textContent = COPY.pass(Math.round(c.p));
+    yearEl.textContent = String(2018 + Math.round(c.y * 8));
+  }
+  paint();
+  rows.forEach(function (i) {
+    var done = T0 + i * STEP + SPIN;
+    tl.to(c, { p: i + 1, duration: 0.25, ease: "power2.out", onUpdate: paint }, done);
+    tl.to("#bar-fill", { scaleX: (i + 1) / 6, duration: 0.5, ease: "expo.out" }, done);
+  });
+  tl.to(c, { y: 1, duration: RUN_END - T0, ease: "none", onUpdate: paint }, T0);
+
+  tl.to("#s-run", { opacity: 0, filter: "blur(6px)", duration: 0.15, ease: "power2.in" }, RUN_END + 0.3);
+  tl.fromTo("#s-done", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, RUN_END + 0.4);
+
+  // Cena 2: a barra cheia cresce e vira o card "Build aprovado" (12.3s → 15.4s)
+  var S2 = RUN_END + 1.05;
+  tl.set("#flood", { opacity: 1 }, S2);
+  tl.to("#flood", { clipPath: CARD, duration: 0.6, ease: "power3.inOut" }, S2);
+  tl.set("#approved", { opacity: 1 }, S2 + 0.45);
+  tl.to("#ap-mark", { opacity: 1, filter: "blur(0px)", duration: 0.18, ease: "power3.out" }, S2 + 0.5);
+  tl.to("#ap-title", { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, S2 + 0.6);
+  tl.to("#ap-sub", { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, S2 + 0.8);
+
+  // Cena 3: o card encolhe até virar o círculo da foto (15.4s → 16.3s)
+  var S3 = S2 + 3.1;
+  tl.to("#approved", { opacity: 0, filter: "blur(10px)", duration: 0.2, ease: "power2.in" }, S3);
+  tl.to("#top, #title, #url1", { opacity: 0, filter: "blur(8px)", duration: 0.25, ease: "power2.in" }, S3);
+  tl.to("#panel", { opacity: 0, duration: 0.2, ease: "power2.in" }, S3 + 0.1);
+  tl.to("#flood", { clipPath: CIRCLE, duration: 0.75, ease: "power3.inOut" }, S3 + 0.05);
+  tl.to("#photo", { opacity: 1, scale: 1, duration: 0.5, ease: "expo.out" }, S3 + 0.65);
+  tl.to("#flood", { opacity: 0, duration: 0.3, ease: "power2.out" }, S3 + 0.85);
+
+  // Cartão final: nome palavra por palavra, depois cargo, tags e link
+  var E = S3 + 0.85;
+  tl.to("#name span", { opacity: 1, filter: "blur(0px)", duration: 0.14, ease: "power3.out", stagger: 0.08 }, E);
+  tl.to("#role", { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, E + 0.45);
+  tl.to("#chips span", { opacity: 1, filter: "blur(0px)", duration: 0.16, ease: "power3.out", stagger: 0.07 }, E + 0.7);
+  tl.to("#url2", { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, E + 1.1);
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines["main"] = tl;
+})();
+</script>
+</body>
+</html>
