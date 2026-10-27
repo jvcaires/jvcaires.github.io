@@ -3,7 +3,8 @@
   lang="pt-BR"
   data-composition-variables='[
     {"id":"lang","type":"enum","label":"Idioma","default":"pt","options":[{"value":"pt","label":"Português (PT-BR)"},{"value":"en","label":"English"}]},
-    {"id":"theme","type":"enum","label":"Tema","default":"light","options":[{"value":"light","label":"Claro"},{"value":"dark","label":"Escuro"}]}
+    {"id":"theme","type":"enum","label":"Tema","default":"light","options":[{"value":"light","label":"Claro"},{"value":"dark","label":"Escuro"}]},
+    {"id":"layout","type":"enum","label":"Layout","default":"wide","options":[{"value":"wide","label":"Largo (desktop)"},{"value":"compact","label":"Compacto (celular)"}]}
   ]'
 >
 <head>
@@ -60,6 +61,20 @@
   .foot { display: flex; gap: 48px; align-items: center; height: 120px; padding: 0 52px; border-top: 2px solid var(--line); flex: none; }
   .pass { color: var(--accent); }
   .warn { color: var(--defect); }
+
+  /* Layout compacto: mesma tela 1280×960, letra ~1,6× maior para caber legível em celular */
+  #main.compact { font-size: 52px; line-height: 1.25; }
+  .compact .head { height: 150px; padding: 0 60px; }
+  .compact .state { height: 66px; }
+  .compact ol { padding: 14px 0; }
+  .compact li { grid-template-columns: 64px minmax(0,1fr) auto; gap: 28px; padding: 10px 60px; }
+  .compact .icon { width: 60px; height: 60px; margin-top: 2px; }
+  .compact .icon svg { width: 60px; height: 60px; }
+  .compact .q { border-width: 4px; inset: 12px; }
+  .compact .spin { border-width: 6px; inset: 4px; }
+  .compact .name small { font-size: 36px; margin-top: 2px; }
+  .compact .bar { height: 14px; }
+  .compact .foot { height: 140px; padding: 0 60px; gap: 52px; }
 </style>
 </head>
 <body>
@@ -95,6 +110,8 @@
   var lang = vars.lang === "en" ? "en" : "pt";
   var root = document.getElementById("main");
   root.setAttribute("data-theme", vars.theme === "dark" ? "dark" : "light");
+  var compact = vars.layout === "compact";
+  if (compact) root.classList.add("compact");
   document.documentElement.lang = lang === "en" ? "en" : "pt-BR";
 
   var COPY = {
@@ -103,7 +120,7 @@
       names: ["login com 2FA redireciona ao painel", "POST /appointments retorna 201", "app sincroniza após perder conexão",
               "reconhecimento facial aceita foto de tela", "serviço SOAP responde no SLA", "formulário navegável por teclado"],
       bug: "BUG aberto antes do deploy",
-      pass: function (n) { return n + " passaram"; }, warn: "1 defeito barrado",
+      pass: function (n) { return n === 1 ? "1 passou" : n + " passaram"; }, warn: "1 defeito barrado",
       total: function (m, s) { return "38 cenários · " + m + "m " + s + "s"; }
     },
     en: {
@@ -115,6 +132,17 @@
       total: function (m, s) { return "38 scenarios · " + m + "m " + s + "s"; }
     }
   }[lang];
+
+  // Textos curtos para o layout compacto (celular)
+  if (compact) {
+    var SHORT = {
+      pt: { done: "concluído", names: ["login com 2FA", "POST /appointments", "sync offline", "reconhecimento facial", "SOAP no SLA", "acesso por teclado"],
+            bug: "aceita foto de tela · BUG", warn: "1 defeito", total: function (m, s) { return m + "m " + s + "s"; } },
+      en: { done: "done", names: ["2FA login", "POST /appointments", "offline sync", "face recognition", "SOAP within SLA", "keyboard access"],
+            bug: "accepts screen photo · BUG", warn: "1 defect", total: function (m, s) { return m + "m " + s + "s"; } }
+    }[lang];
+    for (var k in SHORT) COPY[k] = SHORT[k];
+  }
 
   document.getElementById("t-file").textContent = COPY.file;
   document.getElementById("s-run").textContent = COPY.run;

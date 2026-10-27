@@ -59,7 +59,7 @@ p{margin:0; text-wrap:pretty}
 /* Nav */
 header.top{
   position:sticky; top:env(safe-area-inset-top,0px); z-index:5;
-  background:color-mix(in oklab, var(--bg) 92%, transparent);
+  background:var(--bg);
   border-bottom:1px solid var(--line);
 }
 .nav{display:flex; align-items:center; justify-content:space-between; gap:16px; padding-block:14px}
@@ -76,10 +76,25 @@ header.top{
   border-radius:var(--r); padding:7px 12px; cursor:pointer;
 }
 .theme-btn:hover{color:var(--ink)}
-.icon-btn{display:inline-flex; align-items:center; gap:6px; font-weight:500}
+.icon-btn{display:inline-flex; align-items:center; justify-content:center; gap:6px; font-weight:500; height:38px; padding-block:0; white-space:nowrap; flex:none}
+#langBtn{min-width:96px}
 .icon-btn svg{display:block; flex:none}
 .icon-btn.square{width:38px; height:38px; padding:0; justify-content:center}
+.brand{min-width:0}
+.brand .mark{flex:none}
+.brand-name{white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.nav ul li{flex:none}
 @media (max-width:720px){ .nav ul li.hide-sm{display:none} }
+@media (max-width:520px){
+  .nav{gap:8px; padding-block:10px}
+  .brand-name{display:none}
+  .brand .mark{width:36px; height:36px; font-size:14px}
+  .nav ul{gap:6px}
+  .nav ul a{padding:10px 8px}
+  .icon-btn{height:40px}
+  .icon-btn.square{width:40px; height:40px}
+  #langBtn{min-width:0; padding-inline:10px}
+}
 
 /* Hero */
 .hero{display:grid; grid-template-columns:minmax(0,1.05fr) minmax(0,1fr); gap:56px; align-items:center; padding-block:72px 64px}
@@ -100,8 +115,8 @@ header.top{
 .btn-ghost{border-color:var(--line); color:var(--ink); background:var(--surface)}
 .btn-ghost:hover{border-color:var(--muted)}
 .btn:active{transform:scale(.97)}
-.status{display:flex; align-items:center; gap:10px; margin-top:28px; font-size:15px; color:var(--muted)}
-.status i{width:8px; height:8px; border-radius:50%; background:var(--accent); flex:none}
+.status{display:flex; align-items:baseline; gap:10px; margin-top:28px; font-size:15px; color:var(--muted)}
+.status i{width:8px; height:8px; border-radius:50%; background:var(--accent); flex:none; transform:translateY(-1px)}
 
 /* Suite panel */
 .suite{margin:0; background:var(--surface); border:1px solid var(--line); border-radius:10px; overflow:hidden}
@@ -188,7 +203,7 @@ footer .wrap{display:flex; justify-content:space-between; gap:12px; flex-wrap:wr
 <body>
 <header class="top">
   <div class="wrap nav">
-    <a class="brand" href="#inicio"><span class="mark">JV</span>João Vitor de Caires</a>
+    <a class="brand" href="#inicio" aria-label="João Vitor de Caires"><span class="mark" aria-hidden="true">JV</span><span class="brand-name">João Vitor de Caires</span></a>
     <ul>
       <li class="hide-sm"><a href="#abordagem" data-en="Approach">Abordagem</a></li>
       <li class="hide-sm"><a href="#experiencia" data-en="Experience">Experiência</a></li>
@@ -215,7 +230,7 @@ footer .wrap{display:flex; justify-content:space-between; gap:12px; flex-wrap:wr
 
     <figure class="suite">
       <video id="suiteVideo" muted loop playsinline autoplay preload="auto" width="1280" height="960"
-        poster="assets/video/suite-pt-br-light.webp" src="assets/video/suite-pt-br-light.mp4"
+        poster="assets/video/suite-pt-br-light.webp"
         aria-label="Animação: suíte de regressão executando, 37 cenários passam e 1 defeito é barrado antes do deploy"
         data-en-aria="Animation: a regression suite runs, 37 scenarios pass and 1 defect is caught before deploy"></video>
     </figure>
@@ -411,9 +426,10 @@ footer .wrap{display:flex; justify-content:space-between; gap:12px; flex-wrap:wr
   var MOON='<svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>';
   var vid=document.getElementById('suiteVideo');
   var still=matchMedia('(prefers-reduced-motion: reduce)');
+  var narrow=matchMedia('(max-width: 520px)');
   function syncVideo(){
     if(!vid) return;
-    var key=(lang==='en'?'en':'pt-br')+'-'+(isDark()?'dark':'light');
+    var key=(lang==='en'?'en':'pt-br')+'-'+(isDark()?'dark':'light')+(narrow.matches?'-compact':'');
     var ext=vid.canPlayType('video/mp4; codecs="avc1.640028"')?'mp4':'webm';
     var src='assets/video/suite-'+key+'.'+ext, poster='assets/video/suite-'+key+'.webp';
     vid.setAttribute('poster',poster);
@@ -442,7 +458,7 @@ footer .wrap{display:flex; justify-content:space-between; gap:12px; flex-wrap:wr
   setLang(initial);
   langBtn.addEventListener('click',function(){var n=lang==='en'?'pt':'en'; setLang(n); try{localStorage.setItem('lang',n);}catch(e){}});
   label();
-  try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',label); still.addEventListener('change',label);}catch(e){}
+  try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',label); still.addEventListener('change',label); narrow.addEventListener('change',label);}catch(e){}
   btn.addEventListener('click',function(){
     var next=isDark()?'light':'dark'; root.setAttribute('data-theme',next);
     try{localStorage.setItem('theme',next);}catch(e){} label();

@@ -13,9 +13,9 @@ FPS = 30
 CLIP = {"x": 0, "y": 0, "width": 1280, "height": 960}
 
 
-def render(lang: str, theme: str, out_dir: Path) -> None:
-    variables = {"lang": lang, "theme": theme}
-    name = f"suite-{'pt-br' if lang == 'pt' else 'en'}-{theme}"
+def render(lang: str, theme: str, out_dir: Path, layout: str = "wide") -> None:
+    variables = {"lang": lang, "theme": theme, "layout": layout}
+    name = f"suite-{'pt-br' if lang == 'pt' else 'en'}-{theme}" + ("-compact" if layout == "compact" else "")
     with sync_playwright() as p:
         browser = p.chromium.launch()
         page = browser.new_page(viewport={"width": 1280, "height": 960}, device_scale_factor=1)
@@ -54,8 +54,8 @@ def render(lang: str, theme: str, out_dir: Path) -> None:
 if __name__ == "__main__":
     out = ROOT / "renders"
     out.mkdir(exist_ok=True)
-    combos = [(l, t) for l in ("pt", "en") for t in ("light", "dark")]
-    if len(sys.argv) == 3:
-        combos = [(sys.argv[1], sys.argv[2])]
-    for l, t in combos:
-        render(l, t, out)
+    combos = [(l, t, y) for y in ("wide", "compact") for l in ("pt", "en") for t in ("light", "dark")]
+    if len(sys.argv) >= 3:
+        combos = [(sys.argv[1], sys.argv[2], sys.argv[3] if len(sys.argv) > 3 else "wide")]
+    for l, t, y in combos:
+        render(l, t, out, y)
